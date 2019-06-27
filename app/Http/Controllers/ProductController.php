@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,7 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function index()
     {
         return view('index');
