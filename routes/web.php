@@ -11,4 +11,4 @@
 |
 */
 Auth::routes();
-Route::resource('/','ProductController');
+Route::resource('/','HomeController');
