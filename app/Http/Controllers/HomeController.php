@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use Auth;
+use App\User;
+use DataTables;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,13 +15,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
     public function index()
     {
-        return view('index');
+        $check = Auth::check();
+        $user = Auth::user()['role'];
+        $product = Product::orderBy('sold')->where('stock','>',0)->paginate(6);
+        return view('index',compact('product','check','user'));
     }
 
     /**
@@ -49,7 +56,6 @@ class HomeController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -85,4 +91,21 @@ class HomeController extends Controller
     {
         //
     }
+    public function tampil($id)
+    {
+        $model = Product::findOrfail($id);
+        return view('show',compact('model'));
+    }
+    public function category($id){
+        $check = Auth::check();
+        $user = Auth::user()['role'];
+        $category = Product::where('category',$id)->where('stock','>',0)->paginate(16);
+        return view('category',compact('category','check','user','id'));
+    }
+    public function diskon($id,$diskon){
+        $check = Auth::check();
+        $user = Auth::user()['role'];
+        $category = Product::where('category',$id)->where('discount',$diskon)->where('stock','>',0)->paginate(16);
+        return view('category',compact('category','check','user','id'));
+    }   
 }

@@ -43,13 +43,13 @@
             <!-- <div class="panel-body"> -->
             <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                    <label for="phone" class="col-md-4 control-label">Phone</label>
                     <div class="col-md-6">
-                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-                        @if ($errors->has('email'))
+                        <input id="phone" type="number" class="form-control" name="phone" value="{{ old('phone') }}" required autofocus>
+                        @if ($errors->has('phone'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                <strong>{{ $errors->first('phone') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -63,15 +63,6 @@
                                 <strong>{{ $errors->first('password') }}</strong>
                             </span>
                         @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-6 col-md-offset-4">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -113,13 +104,24 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                    <label for="phone" class="col-md-4 control-label">Phone</label>
                     <div class="col-md-6">
-                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-                        @if ($errors->has('email'))
+                        <input id="phone" type="number" class="form-control" name="phone" value="{{ old('phone') }}" required>
+                        @if ($errors->has('phone'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                <strong>{{ $errors->first('phone') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                    <label for="address" class="col-md-4 control-label">Address</label>
+                    <div class="col-md-6">
+                        <input id="address" type="address" class="form-control" name="address" value="{{ old('address') }}" required>
+                        @if ($errors->has('address'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('address') }}</strong>
                             </span>
                         @endif
                     </div>

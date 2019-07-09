@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use DataTables;
+use Auth;
+use Validator;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -15,10 +19,11 @@ class ProductController extends Controller
     {
         $this->middleware('auth');
     }
-
     public function index()
     {
-        return view('index');
+        $user = Auth::user()['role'];
+        $check = Auth::check();
+        return view('pages.product.index',compact('user','check'));
     }
 
     /**
@@ -28,7 +33,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $model = new Product();
+        $user = Auth::user();
+        return view('pages.product.form',compact('model','user'));
     }
 
     /**
@@ -39,7 +46,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'user_id'=>'required|integer',
+            'name'=>'required|string|max:255',
+            'category'=>'required|string|max:255',
+            'price'=>'required|integer',
+            'stock'=>'required|integer',
+            'sold'=>'required|integer',
+            'photo'=>'required|string|max:255',
+            'discount'=>'max:255',
+            'code' => 'string|max:255'
+        ]);
+        $model = Product::create($request->all());
+        return $model;
     }
 
     /**
@@ -50,7 +69,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Product::findOrfail($id);
+        return view('pages.product.show',compact('model'));
     }
 
     /**
@@ -61,7 +81,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $model = Product::findOrFail($id);
+        $user = Auth::user();
+        return view('pages.product.form',compact('model','user'));
     }
 
     /**
@@ -73,7 +95,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'user_id'=>'required|integer',
+            'name'=>'required|string|max:255',
+            'category'=>'required|string|max:255',
+            'price'=>'required|integer',
+            'stock'=>'required|integer|min:1',
+            'sold'=>'required|integer',
+            'photo'=>'required|string|max:255',
+            'discount'=>'max:255',
+            'code' => 'string|max:255'
+        ]);
+        $model = Product::findOrFail($id);
+        $model->update($request->all());
     }
 
     /**
@@ -84,6 +118,48 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = Product::findOrFail($id);
+        $model->delete();
+    }
+    public function dataTable()
+    {
+        $model = Product::query();
+            return DataTables::of($model)
+                ->addColumn('action',function($model){
+                    return view('layouts._action',[
+                        'model'=>$model,
+                        'url_show'=>route('product.show',$model->id),
+                        'url_edit'=>route('product.edit',$model->id),
+                        'url_destroy'=>route('product.destroy',$model->id)
+                    ]
+                );
+                })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+    public function action(Request $request){
+        $validation = Validator::make($request->all(),[
+            'select_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+        if($validation->passes())
+        {
+            $image = $request->file('select_file');
+            $new_name = rand() .'.'. $image->getClientOriginalExtension();
+            $image->move(public_path('images'),$new_name);
+            return response()->json([
+                'message' => 'Success Upload Image !',
+                'upload_image' => '<img src="/images/'.$new_name.'" id="image" name="image" width="300"/>',
+                'input' => $new_name,
+                'class_name'    => 'alert alert-success'
+            ]);
+        }
+        else{
+            return response()->json([
+                'message' => $validation->errors()->all(),
+                'upload_image' => "",
+                'class_name'    => 'alert-danger'
+            ]);
+        }
     }
 }
