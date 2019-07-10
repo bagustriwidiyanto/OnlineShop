@@ -51,6 +51,9 @@ $('#modal-btn-save').click(function(event){
     form.find('.form-group').removeClass('was-validation');
     form.find('#message').css('display','none');
     form.find('#message').removeClass('alert-danger');
+    if(url == '/user' && method == 'PUT'){
+        console.log('here');
+    }
         $.ajax({
             url: url,
             method: method,
@@ -59,11 +62,34 @@ $('#modal-btn-save').click(function(event){
                 form.trigger('reset');
                 $('#modal').modal('hide');
                     $('#datatable').DataTable().ajax.reload();
-                swal({
-                    icon: 'success',
-                    title: 'Success !',
-                    text: 'Product Added !'
-                })
+                if(response.error == 'newpassword'){
+                    swal({
+                        icon: 'error',
+                        title: 'Oops !',
+                        text: 'New password isn\'t same with confirm password !'
+                    })
+                }
+                else if(response.error == 'hash'){
+                    swal({
+                        icon: 'error',
+                        title: 'Oops !',
+                        text: 'Old Password is incorrect !'
+                    })
+                }
+                else if(response.error == 'double'){
+                    swal({
+                        icon: 'error',
+                        title: 'Oops !',
+                        text: 'Old password and new password is incorrect!'
+                    })
+                }
+                else{
+                    swal({
+                        icon: 'success',
+                        title: 'Success !',
+                        text: 'Product Added !'
+                    })
+                }
             },
             error: function(xhr){
                 var res = xhr.responseJSON;
@@ -354,3 +380,11 @@ $('body').on('keyup','#amount',function(event){
         total = form.find('#total').val(amount*price);
     }
 })
+//================= function ====================
+function newPassword(){
+    swal({
+        icon:'error',
+        title:'Oops !',
+        text: 'New password and confirm password are not same!'
+    })
+}

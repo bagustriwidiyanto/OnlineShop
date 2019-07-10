@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -56,6 +57,8 @@ class HomeController extends Controller
      */
     public function show($id)
     {
+        $model = User::findOrfail($id);
+        return view('pages.user.show',compact('model'));
     }
 
     /**
@@ -66,7 +69,9 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $model = User::findOrFail($id);
+        $user = Auth::user();
+        return view('pages.user.form',compact('model','user'));
     }
 
     /**
@@ -78,7 +83,39 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required|string|max:255',
+            'phone'=>'required|string|max:255',
+            'old_password'=>'required|string|max:255',
+            'new_password'=>'required|string|max:255',
+            'confirm_password'=>'required|string|max:255',
+        ]);
+        $model = User::findOrFail($id);
+        $oldPassword = $model->password;
+        $hash = Hash::check($request->old_password, $oldPassword, []);
+        if($hash == true && $request->new_password == $request->confirm_password){
+            $model->update([
+                'name'=>$request->name,
+                'phone'=>$request->phone,
+                'password'=>bcrypt($request->new_password),
+                'address'=>$request->address
+            ]);   
+        }
+        else if($hash == true && $request->new_password != $request->confirm_password){
+            return response()->json([
+                'error' => 'newpassword',
+            ]);
+        }
+        else if($hash == false && $request->new_password == $request->confirm_password){
+            return response()->json([
+                'error' => 'hash',
+            ]);
+        }
+        else {
+            return response()->json([
+                'error' => 'double',
+            ]);
+        }
     }
 
     /**
@@ -107,5 +144,31 @@ class HomeController extends Controller
         $user = Auth::user()['role'];
         $category = Product::where('category',$id)->where('discount',$diskon)->where('stock','>',0)->paginate(16);
         return view('category',compact('category','check','user','id'));
-    }   
+    }
+    public function user(){
+        $user = Auth::user()['role'];
+        $check = Auth::check();
+        return view('pages.user.index',compact('user','check'));
+    }
+    public function dataTable(){
+        $user = Auth::user();
+        if($user->role == 'User'){
+            $model = User::where('id',$user->id)->get();
+        }
+        else if($user->role == 'Admin'){
+            $model = User::query();
+        }
+            return DataTables::of($model)
+                ->addColumn('action',function($model){
+                    return view('layouts._show',[
+                        'model'=>$model,
+                        'url_show'=>route('user.show',$model->id),
+                        'url_edit'=>route('user.edit',$model->id)
+                    ]
+                );
+                })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
+    }
 }

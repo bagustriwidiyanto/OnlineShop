@@ -21,6 +21,9 @@
         <a class='nav-link' href="{{route('index')}}">Home</a>
       </li>
       <li class="nav-item">
+        <a class='nav-link' href="{{route('home.user')}}">User</a>
+      </li>
+      <li class="nav-item">
         <a class='nav-link' href="{{route('history.index')}}">Buy History</a>
       </li>
       <li class="nav-item dropdown">

@@ -7,19 +7,19 @@
         <div class="form-group">
           <div class="form-check">
             @if($model->status == 'Accepted')
-            {!! Form::checkbox('status','Accepted',true,['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Accepted',true,['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Accepted</label>
-            {!! Form::checkbox('status','Rejected',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Rejected',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Rejected</label>
             @elseif($model->status == 'Rejected')
-            {!! Form::checkbox('status','Accepted',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Accepted',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Accepted</label>
-            {!! Form::checkbox('status','Rejected',true,['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Rejected',true,['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Rejected</label>
             @else
-            {!! Form::checkbox('status','Accepted',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Accepted',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Accepted</label>
-            {!! Form::checkbox('status','Rejected',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
+            {!! Form::radio('status','Rejected',['class'=>'form-check-input','id'=>'invalidCheck']) !!}
                 <label class="form-check-label" for="status">Rejected</label>
             @endif
             </div>
