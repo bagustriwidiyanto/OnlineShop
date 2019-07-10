@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('stock');
             $table->integer('sold');
             $table->integer('discount');
-            $table->integer('code');
+            $table->string('code');
             $table->timestamps();
             $table->string('photo');
         });
