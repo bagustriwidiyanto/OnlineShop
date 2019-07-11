@@ -31,12 +31,12 @@
     </div>
     <div class="form-group">
         <label for="" class="control-label">Diskon</label>
-        {!! Form::number('discount',null,['class'=>'form-control','id'=>'discount']) !!}
+        {!! Form::number('discount',0,['class'=>'form-control','id'=>'discount']) !!}
         <small class="text-muted">Diskon dalam bentuk %</small>
     </div>
     <div class="form-group">
         <label for="" class="control-label">Kode Vocher</label>
-        {!! Form::text('code',null,['class'=>'form-control','id'=>'code']) !!}
+        {!! Form::text('kd_disc',null,['class'=>'form-control','id'=>'code']) !!}
     </div>
     <div class="form-group">
         {!! Form::hidden('photo',null,['class'=>'form-control','id'=>'photo']) !!}

@@ -41,7 +41,7 @@
       responsive:true,
       processing:true,
       serverSide:true,
-      ajax:'{{route("table-user")}}',
+      ajax:'{{route("table-product")}}',
       columns: [
         {data: 'DT_RowIndex',name: 'id'},
         {data: 'name',name: 'name'},

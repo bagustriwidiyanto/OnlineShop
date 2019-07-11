@@ -7,6 +7,7 @@ use DataTables;
 use Auth;
 use Validator;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -46,6 +47,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->kd_disc == null){
+            $request->kd_disc = "";
+        }
+        // dd($request->code);
         $this->validate($request,[
             'user_id'=>'required|integer',
             'name'=>'required|string|max:255',
@@ -53,12 +58,19 @@ class ProductController extends Controller
             'price'=>'required|integer',
             'stock'=>'required|integer',
             'sold'=>'required|integer',
-            'photo'=>'required|string|max:255',
-            'discount'=>'max:255',
-            'code' => 'string|max:255'
+            'photo'=>'required|string|max:255',        
+            ]);
+        Product::insert([
+            'user_id'=> $request->user_id,
+            'name'=>$request->name,
+            'category'=>$request->category,
+            'price'=>$request->price,
+            'stock'=>$request->stock,
+            'sold'=>$request->sold,
+            'photo'=>$request->photo,
+            'discount'=>$request->discount,
+            'code'=>$request->kd_disc,
         ]);
-        $model = Product::create($request->all());
-        return $model;
     }
 
     /**
@@ -161,5 +173,17 @@ class ProductController extends Controller
                 'class_name'    => 'alert-danger'
             ]);
         }
+    }
+    public function diskon(){
+        $user = Auth::user()['role'];
+        $check = Auth::check();
+        return view('diskon',compact('user','check'));
+    }
+    public function diskonUpdate(Request $request){
+        $diskon = Product::where('category',$request->category);
+        $diskon->update([
+            'discount'=>$request->discount,
+            'code'=>$request->code
+        ]);
     }
 }

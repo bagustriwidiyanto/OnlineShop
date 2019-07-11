@@ -11,7 +11,6 @@
     {!! Form::text('discountcode',null,['class'=>'form-control col-12','id'=>'discountcode']) !!}
     {!! Form::hidden('',$model->discount,['class'=>'form-control','id'=>'discount']) !!}
     {!! Form::hidden('',base64_encode($model->code),['class'=>'form-control col-12','id'=>'___token']) !!}
-    <div class='col-2'><a class='diskon' href="#">Check Diskon</a></div>
     <div class='float-right'><small>Barang ini memiliki diskon sampai dengan {{$model->discount}}%</small></div>
     @endif
     <span id='tempat'></span>

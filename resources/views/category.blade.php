@@ -8,17 +8,6 @@
             <h3 class="section-sub-title">produk dengan kategori {{$id}} </h3>
             <h2 class="section-title mb-3">Kategori {{$id}}</h2>
           </div>
-          <div class="btn-group">
-            <button class="btn btn-info btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Diskon
-            </button>
-            <div class="dropdown-menu">
-              <a href="{{route('home.category',$id)}}"><div class='dropdown-item'>Show All</div></a>
-              @for($i = 1; $i<=9;$i++)
-              <a href="{{route('home.diskon',['id'=>$id,'diskon'=>$i.'0'])}}" value='{{$i}}0'><div class='dropdown-item'>{{$i}}0%</div></a>
-              @endfor
-            </div>
-          </div>
         </div>
         <div class="row">
         <table width='100%' id='table_data'>

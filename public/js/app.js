@@ -246,7 +246,7 @@ $('body').on('click','.cartz',function(event){
         title = me.attr('title');
 
     $('#modal-title').text(title);
-    $('#modal-btn-save').show().text('Buy');
+    $('#modal-btn-save').show().text('Submit');
     $.ajax({
         url:url,
         dataType:'html',
@@ -328,7 +328,7 @@ $('body').on('click','.btn-delete-cart',function(event){
     })
 })
 // =================== Check Diskon ===============
-$('body').on('click','.diskon',function(event){
+$('body').on('change','#discountcode',function(event){
     event.preventDefault();
     var form = $('#modal-body form');
         diskon =  atob($('#___token').val());
@@ -342,20 +342,9 @@ $('body').on('click','.diskon',function(event){
             else{
                 $('#total').val($('#total').val()*(100-besar)/100);
             }
-        swal({
-            icon:'success',
-            title:'Success !',
-            text: 'Barang Telah di diskon!'
-        })
+        form.find('#discountcode').append('<span class="text-success"> Berhasil di discount! </span>');
     }
-    else{
-        swal({
-            icon:'error',
-            title:'Oops...',
-            text:'Kode Diskon Salah!'
-        })
-    }
-})
+});
 
 // =============== Price =========================
 
@@ -380,11 +369,18 @@ $('body').on('keyup','#amount',function(event){
         total = form.find('#total').val(amount*price);
     }
 })
-//================= function ====================
-function newPassword(){
-    swal({
-        icon:'error',
-        title:'Oops !',
-        text: 'New password and confirm password are not same!'
-    })
-}
+// ================ Discount On Key Up =============
+$('body').on('keyup','#discount',function(event){
+    event.preventDefault();
+    var form = $('#modal-body form'),
+    discount = form.find('#discount').val();
+    if(discount < 0){
+        form.find('#discount').val(0);
+    }
+    else if(discount == null){
+        form.find('#amount').val(0);
+    }
+    else if(discount > 100){
+        form.find('#amount').val(100);
+    }
+})

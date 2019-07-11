@@ -18,7 +18,7 @@ Route::get('/category/{id}','HomeController@category')->name('home.category');
 Route::get('/category/{id}/{diskon}','HomeController@diskon')->name('home.diskon');
 Route::get('/index/{id}','HomeController@tampil')->name('home.show');
 Route::get('/detail/percobaan','DetailController@percobaan')->name('detail.logout');
-Route::get('/table/product','ProductController@dataTable')->name('table-user');
+Route::get('/table/product','ProductController@dataTable')->name('table-product');
 Route::get('/history/tampil/{id}/{created}','HistoryController@tampil')->name('history.tampil');
 Route::get('/table/history/admin','HistoryController@dataTableAdmin')->name('table-history-admin');
 Route::get('/table/history','HistoryController@dataTableUser')->name('table-history');
@@ -28,6 +28,8 @@ Route::get('/user/{id}','HomeController@show')->name('user.show');
 Route::put('/user/{id}','HomeController@update')->name('user.update');
 Route::get('/user/{id}/edit','HomeController@edit')->name('user.edit');
 Route::get('/coba','ProductController@test');
+Route::get('/diskon','ProductController@diskon')->name('diskon');
+Route::put('/diskon/update','ProductController@diskonUpdate')->name('diskon-update');
 Route::post('/product/action','ProductController@action')->name('product.action');
 Route::post('/history/action','ProductController@action')->name('history.action');
 ///////////////////////////////////////////////////////////////

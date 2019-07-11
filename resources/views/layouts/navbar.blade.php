@@ -20,6 +20,9 @@
       <li class="nav-item">
         <a class='nav-link' href="{{route('index')}}">Home</a>
       </li>
+      <!-- <li class="nav-item">
+        <a href="{{route('diskon')}}" class='cartz nav-link' title='Diskon'>Diskon</a>
+      </li> -->
       <li class="nav-item">
         <a class='nav-link' href="{{route('home.user')}}">User</a>
       </li>
@@ -39,7 +42,7 @@
         </div>
       </li>
       @if($user == 'Admin')
-      <li><a class='nav-item nav-link' href="{{route('product.index')}}">Produk</a></li>
+      <li><a class='nav-item nav-link' href="{{route('product.index')}}">Product</a></li>
       @endif
       @if($check)
       <li><a class='nav-item nav-link' href="{{route('detail.logout')}}">Logout</a></li>
