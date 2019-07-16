@@ -36,7 +36,7 @@
     </div>
     <div class="form-group">
         <label for="" class="control-label">Kode Vocher</label>
-        {!! Form::text('kd_disc',null,['class'=>'form-control','id'=>'code']) !!}
+        {!! Form::text('code',null,['class'=>'form-control','id'=>'code']) !!}
     </div>
     <div class="form-group">
         {!! Form::hidden('photo',null,['class'=>'form-control','id'=>'photo']) !!}

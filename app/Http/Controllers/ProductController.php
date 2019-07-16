@@ -6,6 +6,7 @@ use App\Product;
 use DataTables;
 use Auth;
 use Validator;
+use PDF;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -47,8 +48,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->kd_disc == null){
-            $request->kd_disc = "";
+        if($request->code == null){
+            $request->code = "";
         }
         // dd($request->code);
         $this->validate($request,[
@@ -69,7 +70,7 @@ class ProductController extends Controller
             'sold'=>$request->sold,
             'photo'=>$request->photo,
             'discount'=>$request->discount,
-            'code'=>$request->kd_disc,
+            'code'=>$request->code,
         ]);
     }
 
@@ -116,7 +117,7 @@ class ProductController extends Controller
             'sold'=>'required|integer',
             'photo'=>'required|string|max:255',
             'discount'=>'max:255',
-            'code' => 'string|max:255'
+            'code'=>'string|max:255'
         ]);
         $model = Product::findOrFail($id);
         $model->update($request->all());
@@ -185,5 +186,10 @@ class ProductController extends Controller
             'discount'=>$request->discount,
             'code'=>$request->code
         ]);
+    }
+    public function pdf(){
+        $data['all'] = Product::all();
+        $pdf = PDF::loadView('pdf.product', $data);
+        return $pdf->download('Laporan Product.pdf');
     }
 }

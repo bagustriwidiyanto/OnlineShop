@@ -13,7 +13,7 @@
 Auth::routes();
 Route::get('/discount/product','ProductController@discount')->name('product.discount');
 Route::get('/detail/cart','DetailController@cart')->name('detail.cart');
-Route::get('/home/user','HomeController@user')->name('home.user');
+Route::get('/home/user','HomeController@user')->name('home.user')->middleware('auth');
 Route::get('/category/{id}','HomeController@category')->name('home.category');
 Route::get('/category/{id}/{diskon}','HomeController@diskon')->name('home.diskon');
 Route::get('/index/{id}','HomeController@tampil')->name('home.show');
@@ -29,6 +29,9 @@ Route::put('/user/{id}','HomeController@update')->name('user.update');
 Route::get('/user/{id}/edit','HomeController@edit')->name('user.edit');
 Route::get('/coba','ProductController@test');
 Route::get('/diskon','ProductController@diskon')->name('diskon');
+Route::get('/pdf/product','ProductController@pdf')->name('pdf-product');
+Route::get('/pdf/history','HistoryController@pdf')->name('pdf-history');
+
 Route::put('/diskon/update','ProductController@diskonUpdate')->name('diskon-update');
 Route::post('/product/action','ProductController@action')->name('product.action');
 Route::post('/history/action','ProductController@action')->name('history.action');

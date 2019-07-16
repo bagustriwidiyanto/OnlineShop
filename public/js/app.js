@@ -46,7 +46,6 @@ $('#modal-btn-save').click(function(event){
     var form = $('#modal-body form'),
         url = form.attr('action'),
         method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
-        console.log(form.serialize());
     form.find('.text-danger').remove();
     form.find('.form-group').removeClass('was-validation');
     form.find('#message').css('display','none');
@@ -84,6 +83,7 @@ $('#modal-btn-save').click(function(event){
                     })
                 }
                 else{
+                    console.log(response);
                     swal({
                         icon: 'success',
                         title: 'Success !',
@@ -348,7 +348,7 @@ $('body').on('change','#discountcode',function(event){
 
 // =============== Price =========================
 
-$('body').on('keyup','#amount',function(event){
+$('body').on('change','#amount',function(event){
     event.preventDefault();
     var form = $('#modal-body form'),
     amount = form.find('#amount').val();
@@ -358,19 +358,35 @@ $('body').on('keyup','#amount',function(event){
     max = form.find('#stock').val();
     if(amount < 1){
         form.find('#amount').val(1);
+        amount = form.find('#amount').val();
+        if(besardiskon.length != 0){
+            total = form.find('#total').val(amount*price*besardiskon);
+        }
+        else{
+            total = form.find('#total').val(amount*price);
+        }
     }
-    else if(amount > max){
-        form.find('#amount').val(max);
-    }
-    if(besardiskon.length != 0){
-        total = form.find('#total').val(amount*price*besardiskon.val());    
+    else if(amount > parseInt(max)){
+        form.find('#amount').val(parseInt(max));
+        amount = form.find('#amount').val();
+        if(besardiskon.length != 0){
+            total = form.find('#total').val(amount*price*besardiskon);
+        }
+        else{
+            total = form.find('#total').val(amount*price);
+        }
     }
     else{
-        total = form.find('#total').val(amount*price);
+        if(besardiskon.length != 0){
+            total = form.find('#total').val(amount*price*besardiskon);
+        }
+        else{
+            total = form.find('#total').val(amount*price);
+        }
     }
 })
 // ================ Discount On Key Up =============
-$('body').on('keyup','#discount',function(event){
+$('body').on('change','#discount',function(event){
     event.preventDefault();
     var form = $('#modal-body form'),
     discount = form.find('#discount').val();

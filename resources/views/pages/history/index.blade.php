@@ -9,6 +9,11 @@
             <h2 class="section-title mb-3">History</h2>
           </div>
         </div>
+        @if($user == 'Admin')
+        <div class="panel-head" style='margin-bottom:10px;'>
+          <a href='{{route("pdf-history")}}' class="btn btn-default" title='Report'>Report</a>
+        </div>
+      @endif
         <div class="panel-body">
         <input type="hidden" id='role' value='{{$user}}'>
         <table id='datatable' width='100%' class='table table-hover'>

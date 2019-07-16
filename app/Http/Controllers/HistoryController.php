@@ -7,6 +7,7 @@ use App\History;
 use App\Detail;
 use App\Sell;
 use App\Product;
+use PDF;
 use Auth;
 use DataTables;
 use Illuminate\Support\Facades\Input;
@@ -219,5 +220,12 @@ class HistoryController extends Controller
                 'class_name'    => 'alert-danger'
             ]);
         }
+    }
+    public function pdf(){
+        $data['all'] = History::leftJoin('sells',
+        'histories.created_at', '=', 'sells.created_at')
+        ->get();
+        $pdf = PDF::loadView('pdf.sell', $data);
+        return $pdf->download('Laporan Penjualan.pdf');
     }
 }

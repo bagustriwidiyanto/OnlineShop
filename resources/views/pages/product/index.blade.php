@@ -12,6 +12,7 @@
         </div>
         <div class="panel-head" style='margin-bottom:10px;'>
           <a href='{{route("product.create")}}' class="btn btn-info modal-show" title='Add Product'>Add Product</a>
+          <a href='{{route("pdf-product")}}' class="btn btn-default" title='Report'>Report</a>
         </div>
         <div class="panel-body">
         <table id='datatable' width='100%' class='table table-hover'>
