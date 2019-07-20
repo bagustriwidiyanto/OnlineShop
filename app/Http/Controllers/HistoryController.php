@@ -93,7 +93,12 @@ class HistoryController extends Controller
         $model = History::where('created_at',$id)->where('users_id',$user)->get();
         return view('pages.history.show',compact('model'));
     }
-
+    
+    public function print($id)
+    {
+        $model = History::where('created_at',$id)->get();
+        return view('struck',compact('model'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -167,7 +172,8 @@ class HistoryController extends Controller
                     return view('layouts._show',[
                         'model'=>$model,
                         'url_show'=>route('history.tampil',['id'=>$model->users_id,'created'=>$model->created_at]),
-                        'url_edit'=>route('history.edit',$model->id)
+                        'url_edit'=>route('history.edit',$model->id),
+                        'url_print'=>route('history.print',$model->created_at)
                     ]
                 );
                 })
@@ -182,7 +188,7 @@ class HistoryController extends Controller
         $model = Sell::where('users_id',$id)->orderBy('created_at')->get();
             return DataTables::of($model)
                 ->addColumn('action',function($model){
-                    return view('layouts._show',[
+                    return view('layouts._show-user',[
                         'model'=>$model,
                         'url_show'=>route('history.show',$model->created_at),
                         'url_edit'=>route('history.edit',$model->id)
