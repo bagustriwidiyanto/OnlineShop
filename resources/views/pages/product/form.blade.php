@@ -31,7 +31,7 @@
     </div>
     <div class="form-group">
         <label for="" class="control-label">Diskon</label>
-        {!! Form::number('discount',0,['class'=>'form-control','id'=>'discount']) !!}
+        {!! Form::number('discount',$model->exists ? null : 0,['class'=>'form-control','id'=>'discount']) !!}
         <small class="text-muted">Diskon dalam bentuk %</small>
     </div>
     <div class="form-group">

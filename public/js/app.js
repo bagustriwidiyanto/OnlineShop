@@ -83,7 +83,6 @@ $('#modal-btn-save').click(function(event){
                     })
                 }
                 else{
-                    console.log(response);
                     swal({
                         icon: 'success',
                         title: 'Success !',
