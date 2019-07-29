@@ -48,6 +48,7 @@ class HistoryController extends Controller
      */
     public function store(Request $request)
     {
+        $parameter = rand();
         $users_id = $request->users_id;
         $products_id = $request->products_id;
         $products_name = $request->products_name;
@@ -65,6 +66,7 @@ class HistoryController extends Controller
             $objModel->amount = $amount[$i];
             $objModel->total = $total[$i];
             $objModel->discount = $discount[$i];
+            $objModel->parameter = $parameter;
             $objModel->save();
         }
         $user_id = $request->user_id;
@@ -76,6 +78,7 @@ class HistoryController extends Controller
             $tabelSell->total_price = $total_price;
             $tabelSell->photo = "";
             $tabelSell->status = "";
+            $tabelSell->parameter = $parameter;
             $tabelSell->save();
 
         Detail::where('users_id',$request->user_id)->delete();
@@ -90,13 +93,13 @@ class HistoryController extends Controller
     public function show($id)
     {
         $user = Auth::user()->id;
-        $model = History::where('created_at',$id)->where('users_id',$user)->get();
+        $model = History::where('parameter',$id)->where('users_id',$user)->get();
         return view('pages.history.show',compact('model'));
     }
     
     public function print($id)
     {
-        $model = History::where('created_at',$id)->get();
+        $model = History::where('parameter',$id)->get();
         return view('struck',compact('model'));
     }
     /**
@@ -109,9 +112,9 @@ class HistoryController extends Controller
     {
         $user = Auth::user();
         $model = Sell::findOrFail($id);
-        $created = $model->created_at;
-        $stock = History::where('created_at',$created)->get();
-        $jumlah = History::where('users_id',$model->users_id)->where('created_at',$created)->sum('amount');
+        $created = $model->parameter;
+        $stock = History::where('parameter',$created)->get();
+        $jumlah = History::where('users_id',$model->users_id)->where('parameter',$created)->sum('amount');
         $array = [$user,$created,$stock,$jumlah];
         return view('pages.history.form-user',compact('model','array'));
     }
@@ -137,10 +140,9 @@ class HistoryController extends Controller
             $this->validate($request,[
                 'status'=>'required|string|max:255'
             ]);
-            Sell::where('id',$request->model)->update(['status'=> $request->status]);
             $sell = Sell::findOrFail($id);
             $acuan = $request->nomer;
-            if($sell->status == null){
+            if($sell->status == "" && $request->status == 'Accepted'){
                 for($i = 0 ; $i<$acuan;$i++){
                     $product = Product::findOrFail($request->products_id[$i]);
                     $stock = $product->stock;
@@ -151,6 +153,7 @@ class HistoryController extends Controller
                     ]);
                 }
             }
+            Sell::where('id',$request->model)->update(['status'=> $request->status]);
         }
     }
 
@@ -171,9 +174,9 @@ class HistoryController extends Controller
                 ->addColumn('action',function($model){
                     return view('layouts._show',[
                         'model'=>$model,
-                        'url_show'=>route('history.tampil',['id'=>$model->users_id,'created'=>$model->created_at]),
+                        'url_show'=>route('history.tampil',['id'=>$model->users_id,'created'=>$model->parameter]),
                         'url_edit'=>route('history.edit',$model->id),
-                        'url_print'=>route('history.print',$model->created_at)
+                        'url_print'=>route('history.print',$model->parameter)
                     ]
                 );
                 })
@@ -190,7 +193,7 @@ class HistoryController extends Controller
                 ->addColumn('action',function($model){
                     return view('layouts._show-user',[
                         'model'=>$model,
-                        'url_show'=>route('history.show',$model->created_at),
+                        'url_show'=>route('history.show',$model->parameter),
                         'url_edit'=>route('history.edit',$model->id)
                     ]
                 );
@@ -200,7 +203,7 @@ class HistoryController extends Controller
                 ->make(true);
     }
     public function tampil($id,$created){
-        $model = History::where('created_at',$created)->where('users_id',$id)->get();
+        $model = History::where('parameter',$created)->where('users_id',$id)->get();
         return view('pages.history.show',compact('model'));
     }
     public function action(Request $request){
@@ -229,7 +232,7 @@ class HistoryController extends Controller
     }
     public function pdf(){
         $data['all'] = History::leftJoin('sells',
-        'histories.created_at', '=', 'sells.created_at')
+        'histories.parameter', '=', 'sells.parameter')
         ->get();
         $pdf = PDF::loadView('pdf.sell', $data);
         return $pdf->download('Laporan Penjualan.pdf');

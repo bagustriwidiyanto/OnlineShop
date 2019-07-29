@@ -51,7 +51,6 @@ $('#modal-btn-save').click(function(event){
     form.find('#message').css('display','none');
     form.find('#message').removeClass('alert-danger');
     if(url == '/user' && method == 'PUT'){
-        console.log('here');
     }
         $.ajax({
             url: url,
@@ -354,7 +353,7 @@ $('body').on('change','#amount',function(event){
     price = form.find('#products_price').val();
     total = form.find('#total').val();
     besardiskon = form.find('#besardiskon');
-    max = form.find('#stock').val();
+    max = parseInt(form.find('#stock').val())-parseInt(form.find('#cart-amount').val())-parseInt(form.find('#history-amount').val());
     if(amount < 1){
         form.find('#amount').val(1);
         amount = form.find('#amount').val();
@@ -365,8 +364,8 @@ $('body').on('change','#amount',function(event){
             total = form.find('#total').val(amount*price);
         }
     }
-    else if(amount > parseInt(max)){
-        form.find('#amount').val(parseInt(max));
+    else if(amount > max){
+        form.find('#amount').val(max);
         amount = form.find('#amount').val();
         if(besardiskon.length != 0){
             total = form.find('#total').val(amount*price*besardiskon);

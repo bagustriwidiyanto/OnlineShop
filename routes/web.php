@@ -29,11 +29,9 @@ Route::put('/user/{id}','HomeController@update')->name('user.update');
 Route::get('/user/{id}/edit','HomeController@edit')->name('user.edit');
 Route::get('/coba','ProductController@test');
 Route::get('/diskon','ProductController@diskon')->name('diskon');
-// Route::get('/pdf/{history}/history','HistoryController@struck')->name('pdf-struck');
 Route::get('/history/{id}/print','HistoryController@print')->name('history.print');
 Route::get('/pdf/product','ProductController@pdf')->name('pdf-product');
 Route::get('/pdf/history','HistoryController@pdf')->name('pdf-history');
-
 Route::put('/diskon/update','ProductController@diskonUpdate')->name('diskon-update');
 Route::post('/product/action','ProductController@action')->name('product.action');
 Route::post('/history/action','ProductController@action')->name('history.action');

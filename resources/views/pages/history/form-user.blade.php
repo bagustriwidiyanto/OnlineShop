@@ -27,9 +27,6 @@
         </div>
         {!! Form::hidden('model',$model->id,['class'=>'form-control','id'=>'model']) !!}
         </div>
-        <!-- {!! Form::hidden('sold',$array[3],['class'=>'form-control','id'=>'sold']) !!} -->
-        <!-- {!! Form::text('created',$array[1],['class'=>'form-control','id'=>'created']) !!} -->
-        <!-- ////////////////////////////////////////////////// -->
         <?php $no = 1; ?>
     @foreach ($array[2] as $stocks)
         {!! Form::hidden('products_id[]',$stocks->products_id,['class'=>'form-control','id'=>'products_id']) !!}

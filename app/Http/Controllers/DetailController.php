@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Detail;
+use App\History;
 use Auth;
 use Session;
 
@@ -64,7 +65,9 @@ class DetailController extends Controller
     {
         $model = Product::findOrFail($id);
         $user = Auth::user();
-        return view('pages.detail.form',compact('model','user'));
+        $cart = Detail::where('products_id',$model->id)->get();
+        $history = History::leftJoin('sells','histories.parameter' ,'=', 'sells.parameter')->where('sells.status',"")->get();
+        return view('pages.detail.form')->with(compact('model'))->with(compact('user'))->with(compact('cart'))->with(compact('history'));
     }
 
     /**

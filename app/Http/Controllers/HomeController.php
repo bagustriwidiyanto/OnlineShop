@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use Auth;
 use App\User;
+use App\Detail;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -160,7 +161,7 @@ class HomeController extends Controller
         }
             return DataTables::of($model)
                 ->addColumn('action',function($model){
-                    return view('layouts._show',[
+                    return view('layouts._show-user',[
                         'model'=>$model,
                         'url_show'=>route('user.show',$model->id),
                         'url_edit'=>route('user.edit',$model->id)

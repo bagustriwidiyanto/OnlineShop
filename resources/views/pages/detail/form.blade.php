@@ -13,7 +13,16 @@
     {!! Form::hidden('',base64_encode($model->code),['class'=>'form-control col-12','id'=>'___token']) !!}
     <div class='float-right'><small>Barang ini memiliki diskon sampai dengan {{$model->discount}}%</small></div>
     @endif
-    <span id='tempat'></span>
+    @if($cart != null)
+        {!! Form::hidden('cart.amount',$cart->sum('amount'),['class'=>'form-control','id'=>'cart-amount']) !!}
+    @else
+        {!! Form::hidden('cart.amount',0,['class'=>'form-control','id'=>'cart-amount']) !!}
+    @endif
+    @if($history != null)
+        {!! Form::hidden('history.amount',$history->sum('amount'),['class'=>'form-control','id'=>'history-amount']) !!}
+    @else
+        {!! Form::hidden('history.amount',0,['class'=>'form-control','id'=>'history-amount']) !!}
+    @endif<span id='tempat'></span>
     {!! Form::hidden('products_id',$model->id,['class'=>'form-control','id'=>'products_id']) !!}
     {!! Form::hidden('products_name',$model->name,['class'=>'form-control','id'=>'products_name']) !!}
     {!! Form::hidden('products_price',$model->price,['class'=>'form-control','id'=>'products_price']) !!}
